@@ -57,10 +57,10 @@ var chat3_happened = false;
 var chat4_happened = false;
 var scene1 = false;
 var scene2 = false;
-var i = 0;
+var i = 0;                     //number of bubbles
 var up = 0;
-var mv = false;
-var l_off = false;
+var mv = false;                //whether the bubbles need to move up or not
+var l_off = false;             //whether light is off or not
 var desk, room, bat, clock, light_off, flash, avatar, email, living_room, earrings;
 var move_r, move_l;
 var phone_open = true;
@@ -70,9 +70,10 @@ var chat_stop = false;
 var kate_meet = false;
 var dead_end = false;
 var win_end = false;
-var window_1 = true;
-var choice_1 = false;
-var choice_2 = false;
+var window_1 = true;            //whether notification window 1 opens or not
+var choice_1 = false;           //two options: "use bat" & "run"
+var choice_2 = false;           //one option: "run"
+
 
 //------- Sound -------
 var send, recieve, click, laugh;
@@ -133,6 +134,7 @@ function setup() {
   // send.loop();
 }
 
+//return the legnth of the given string
 function a_len(array) {
   var count = 0;
   for (var k in array) {
@@ -142,6 +144,40 @@ function a_len(array) {
   }
   return count;
 }
+
+//return the pop ups (notification)
+function pop_up(msg, but1, but2, num) {
+  fill(255, 215, 86);
+  rect(393, 219, 565, 289, 5);
+  fill(53, 46, 24).strokeWeight(0).textSize(40).textFont("Sue Ellen Francisco");
+  text(msg, 450, 306);
+  if(num == 2) {
+    fill(255);
+    rect(447, 425, 174, 57, 5);
+    rect(717, 425, 174, 57, 5);
+  }
+  else if(num == 1) {
+    //fill(255, 215, 86);
+    //rect(447, 425, 174, 57, 5);
+    fill(255);
+    rect(595, 425, 174, 57, 5);
+  }
+  else {
+    fill(255, 215, 86);
+    rect(447, 425, 174, 57, 5);
+    rect(717, 425, 174, 57, 5);
+  }
+  
+  fill(53, 46, 24).strokeWeight(0).textSize(40).textFont("Sue Ellen Francisco");
+  if(num == 2) {
+    text(but1, 482, 471);
+    text(but2, 781, 471);
+  }
+  else if(num == 1) {
+    text(but1, 645, 471);
+  } 
+}
+
 
 function mouseReleased() {
   //move right button
@@ -315,6 +351,7 @@ function mouseReleased() {
       click.play();
     }
 
+    //check whether the email has been seen or not
     if (chat4_happened) {
       if (chat3_happened){
         if (i == 79)
@@ -324,22 +361,30 @@ function mouseReleased() {
       }      
     }
 
-    if (kate_meet && mouseX > 715 && mouseX < 892 && mouseY > 402 && mouseY < 461 && !Run && choice_1 && !Usebat) {
-      Run = true;
-      dead_end = true;
-      // laugh.play();
-      laugh_played = true;
-    } else if (kate_meet && mouseX > 579 && mouseX < 758 && mouseY > 401 && mouseY < 460 && !Run && choice_2 && !Usebat) {
-      Run = true;
-      dead_end = true;
-      // laugh.play();
-      laugh_played = true;
-    } else if (kate_meet && mouseX > 447 && mouseX < 624 && mouseY > 401 && mouseY < 460 && !Usebat && choice_1) {
-      Usebat = true;
-    } else if (kate_meet && Usebat && choice_1) {
+    //dismiss the window after choose "run"
+    if (kate_meet && Usebat && !(mouseX > 400 && mouseX < 927 && mouseY > 214 && mouseY < 485) && choice_1 && window_1) {
       window_1 = false;
-      laugh_played = true;    //should be commented for future plot development
+      // Usebat = false;
+      // kate_meet = false;
+      //choice_1 = false;
+      //laugh_played = true;    //should be commented for future plot development
     }
+
+    if (kate_meet && mouseX > 715 && mouseX < 892 && mouseY > 402 && mouseY < 461 && !Run && choice_1 && !Usebat) {   //choose "run" in two options
+      Run = true;
+      dead_end = true;
+      // laugh.play();
+      laugh_played = true;
+    } else if (kate_meet && mouseX > 579 && mouseX < 758 && mouseY > 401 && mouseY < 460 && !Run && choice_2 && !Usebat) {  //choose "run" in one option
+      Run = true;
+      dead_end = true;
+      // laugh.play();
+      laugh_played = true;
+    } else if (kate_meet && mouseX > 447 && mouseX < 624 && mouseY > 401 && mouseY < 460 && !Usebat && choice_1) {  //choose "use bat" in two options
+      Usebat = true;
+    }
+
+
   }
 }
 
@@ -657,9 +702,22 @@ function chat_4() {
 
 function chat_5() {
   if (chat3_happened) {
-    box[80] = new bubble(0, "I take Kate down", 80, 22);
+    box[80] = new bubble(0, "I took Kate down", 80, 23);
+    box[81] = new bubble(1, "Wtf...You ok?", 81, 23);
+    box[82] = new bubble(0, "Yeah I guess I'm safe for now", 82, 23);
+    box[83] = new bubble(0, "Maybe I should tie her up and ask about Alice & Jeff when   the police come?", 83, 23);
+    box[84] = new bubble(1, "No, that's too dangerous", 84, 25);
+    box[85] = new bubble(1, "I'm almost there", 85, 25);
+    box[86] = new bubble(1, "Meet me at the garden", 86, 25);
+
   } else {
-    box[63] = new bubble(0, "I take Kate down", 63, 14);
+    box[63] = new bubble(0, "I took Kate down", 63, 15);
+    box[64] = new bubble(1, "Wtf...You ok?", 64, 15);
+    box[65] = new bubble(0, "Yeah I guess I'm safe for now", 65, 15);
+    box[66] = new bubble(0, "Maybe I should tie her up and ask about Alice & Jeff when   the police come?", 66, 15);
+    box[67] = new bubble(1, "No, that's too dangerous", 67, 17);
+    box[68] = new bubble(1, "I'm almost there", 68, 17);
+    box[69] = new bubble(1, "Meet me at the garden", 69, 17);
   }
   display_bubble(i);
   sound_play(i);
@@ -831,7 +889,7 @@ if (scene2 == true) {
     chat4 = true;
     phone_open = true;
     draw_phone(4);
-  } else if (kate_meet && !window_1 && Usebat) {
+  } else if (kate_meet && !window_1 && Usebat && !chat5) {
     chat5 = true;
     phone_open = true;
     draw_phone(5);
@@ -873,7 +931,8 @@ if (scene2 == true) {
 
       fill(53, 46, 24).strokeWeight(0).textSize(40).textFont("Sue Ellen Francisco");
       text("Kate is down.\nNice!", 564, 344);
-      win_end = true;
+      //window_1 = false;
+      //win_end = true;
     }
 
   }
@@ -898,11 +957,11 @@ if (dead_end) {
   fill(53, 46, 24).strokeWeight(0).textSize(40).textFont("Sue Ellen Francisco");
   text("Game Over.\nYou didn't make it.", 564, 344);
 } else if (win_end) {
-    if (laugh_played) {
+  if (laugh_played) {
     laugh.play();
     laugh_played = false;
   }
-  phone_open = false;
+  //phone_open = false;
   fill(255, 215, 86);
   rect(403, 217, 522, 267, 5);
   // textAlign(CENTER);
